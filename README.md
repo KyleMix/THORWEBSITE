@@ -211,3 +211,57 @@ for artwork.
 
 See the design record for the full open-questions list:
 <https://claude.ai/code/artifact/63f0eddb-8927-43c9-b089-64745e98c0ea>
+
+---
+
+## Performance and accessibility
+
+Measured with Lighthouse against a production build, mobile preset, all four
+categories. Every page clears the 95 budget:
+
+| Page | Perf | A11y | Best practices | SEO |
+|---|---|---|---|---|
+| `/` | 95 | 100 | 100 | 100 |
+| `/work` | 97 | 100 | 100 | 100 |
+| `/book` | 97 | 97 | 100 | 100 |
+| `/shop` | 95 | 100 | 100 | 100 |
+| `/shop/[slug]` | 99 | 100 | 100 | 100 |
+| `/designs` | 97 | 100 | 100 | 100 |
+| `/about` | 97 | 100 | 100 | 100 |
+| `/contact` | 97 | 100 | 100 | 100 |
+| `/events` | 97 | 100 | 100 | 100 |
+
+Desktop is 100 / 100 / 100 / 100 throughout. CLS is 0 on every page.
+
+**On LCP.** Lighthouse reports 2.1–2.9 s on mobile; measured directly against a
+throttled profile (1.6 Mbps, 4× CPU) the LCP element — the hero image — paints
+at **1.3 s**. The gap is Lighthouse's simulated-throttling model, which is
+deliberately pessimistic. Note that the hero is currently a flat placeholder
+that compresses to a few KB; a real photograph will be heavier, so re-measure
+once `/assets` lands.
+
+**The one 97.** `/book` fails Lighthouse's `color-contrast` audit on the
+navigation. This is a false positive: the nav uses `mix-blend-mode: difference`
+so it inverts itself against whatever is behind it, and Lighthouse evaluates
+declared colours rather than rendered ones — it sees bone-on-bone. Sampling the
+actual rendered pixels gives **17.3:1** on paper pages and **14.3:1** over the
+hero photograph, both far above AA. The dark band at the top of the hero
+(`.cover::before`) exists to keep that true over mid-tone imagery, where a
+difference blend would otherwise wash out.
+
+Everything else is real: the palette's two faint greys were raised to clear
+4.5:1 after measuring (3.4:1 and 3.5:1 originally), the lightbox is keyboard
+navigable (`←` `→` `Esc`) with focus moved on open, all tap targets are 48 px,
+and `prefers-reduced-motion` removes the lamp, the custom cursor, the pinned
+flip-through and every transition.
+
+To re-run an audit:
+
+```bash
+npm run build && npm start
+npx --yes lighthouse http://localhost:3000/ --view
+```
+
+Fonts are subset and axis-pinned (`npm run fonts:subset`): 196 KB → 122 KB
+across five faces. Only the display face is preloaded — preloading the italic
+too made the two compete on a throttled link and pushed LCP out.

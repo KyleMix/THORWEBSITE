@@ -20,9 +20,9 @@ export function ProductGallery({ imgs }: { imgs: { img: ImgMeta; alt: string }[]
         <Pic img={cur.img} alt={cur.alt} sizes="(min-width: 60rem) 58vw, 100vw" priority={i === 0} />
       </button>
       {imgs.length > 1 && (
-        <div className="pdp-thumbs" role="tablist" aria-label="Product images">
+        <div className="pdp-thumbs" role="group" aria-label="Product images">
           {imgs.map((im, k) => (
-            <button key={k} type="button" role="tab" aria-pressed={k === i} aria-label={`Image ${k + 1}`} onClick={() => setI(k)}>
+            <button key={k} type="button" aria-pressed={k === i} aria-label={`Show image ${k + 1} of ${imgs.length}`} onClick={() => setI(k)}>
               <Image src={im.img.src} alt="" width={96} height={96} sizes="96px" />
             </button>
           ))}

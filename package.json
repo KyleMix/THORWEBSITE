@@ -10,7 +10,8 @@
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
     "import:assets": "node scripts/import-assets.mjs",
-    "sync:stripe": "node scripts/sync-stripe.mjs"
+    "sync:stripe": "node scripts/sync-stripe.mjs",
+    "fonts:subset": "python3 scripts/subset-fonts.py"
   },
   "dependencies": {
     "@calcom/embed-react": "^1.5.3",
@@ -22,14 +23,20 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "resend": "^4.1.1",
+    "sharp": "^0.35.4",
     "stripe": "^17.5.0"
   },
   "devDependencies": {
     "@types/node": "^22.10.7",
     "@types/react": "^19.0.7",
     "@types/react-dom": "^19.0.3",
-    "playwright": "^1.63.0",
     "typescript": "^5.7.3",
     "yaml": "^2.9.1"
-  }
+  },
+  "browserslist": [
+    "chrome >= 111",
+    "edge >= 111",
+    "firefox >= 113",
+    "safari >= 16.4"
+  ]
 }

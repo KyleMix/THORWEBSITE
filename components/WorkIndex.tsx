@@ -12,6 +12,14 @@ export type IndexItem = { slug: string; title: string; year: number; medium: str
  */
 export function WorkIndex({ items }: { items: IndexItem[] }) {
   const [active, setActive] = useState<string | null>(null);
+  // The preview layer is always in the viewport, so any <Image> mounted inside
+  // it loads immediately. Mount a piece only once it has been pointed at, and
+  // keep it after, so each preview is fetched once and never on page load.
+  const [seen, setSeen] = useState<string[]>([]);
+  const show = (slug: string) => {
+    setActive(slug);
+    setSeen((s) => (s.includes(slug) ? s : [...s, slug]));
+  };
   const prev = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const el = prev.current;
@@ -30,7 +38,7 @@ export function WorkIndex({ items }: { items: IndexItem[] }) {
       <ol className="index" onPointerLeave={() => setActive(null)}>
         {items.map((w) => (
           <li key={w.slug}>
-            <Link href={`/work/${w.slug}`} className="index-row" onPointerEnter={() => setActive(w.slug)} onFocus={() => setActive(w.slug)} data-cursor="view" data-cursor-label="View">
+            <Link href={`/work/${w.slug}`} className="index-row" onPointerEnter={() => show(w.slug)} onFocus={() => show(w.slug)} data-cursor="view" data-cursor-label="View">
               <span className="idx">{w.no}</span>
               <span className="ttl">{w.title}</span>
               <span className="meta">{w.year} · {w.medium}{w.placement ? ` · ${w.placement}` : ''}</span>
@@ -40,7 +48,7 @@ export function WorkIndex({ items }: { items: IndexItem[] }) {
         ))}
       </ol>
       <div ref={prev} className="preview" data-on={active ? '1' : '0'} aria-hidden="true">
-        {items.map((w) => (
+        {items.filter((w) => seen.includes(w.slug)).map((w) => (
           <Image key={w.slug} src={w.img.src} alt="" width={w.img.width} height={w.img.height} sizes="320px" data-active={active === w.slug ? '1' : '0'} />
         ))}
       </div>

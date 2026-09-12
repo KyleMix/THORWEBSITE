@@ -10,3 +10,5 @@ next-env.d.ts
 .DS_Store
 # Source assets are large; the import script copies what the site needs into public/media.
 # Commit /assets only if you want the originals in git.
+# Pristine font downloads kept for re-running scripts/subset-fonts.py locally.
+public/fonts/*.woff2.orig
