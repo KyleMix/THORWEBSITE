@@ -1,0 +1,21 @@
+title: Anatomical Heart with Key
+kind: original
+images:
+- image: anatomical-heart-with-key-1.jpg
+  alt: 'TODO: Anatomical Heart with Key, front'
+- image: anatomical-heart-with-key-2.jpg
+  alt: 'TODO: Anatomical Heart with Key, detail'
+priceCents: 18000
+inventory: 1
+sold: false
+edition: One of one
+size: 9 × 12 in
+medium: Ink and wash on paper
+year: 2025
+framing: optional
+framingCents: 6500
+description: TODO — Thor's description of Anatomical Heart with Key. Prices here are placeholders; set the real ones in Keystatic.
+work: anatomical-heart-key
+featured: true
+stripeProductId: ''
+stripePriceId: ''

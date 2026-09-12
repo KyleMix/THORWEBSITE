@@ -1,0 +1,12 @@
+node_modules
+.next
+out
+.env
+.env.local
+.env*.local
+.vercel
+*.tsbuildinfo
+next-env.d.ts
+.DS_Store
+# Source assets are large; the import script copies what the site needs into public/media.
+# Commit /assets only if you want the originals in git.

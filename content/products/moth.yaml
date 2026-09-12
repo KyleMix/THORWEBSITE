@@ -1,0 +1,21 @@
+title: Moth
+kind: print
+images:
+- image: moth-1.jpg
+  alt: 'TODO: Moth, front'
+- image: moth-2.jpg
+  alt: 'TODO: Moth, detail'
+priceCents: 4500
+inventory: 25
+sold: false
+edition: Edition of 25, signed and numbered
+size: 12 × 12 in
+medium: Giclée on archival cotton rag
+year: 2025
+framing: none
+framingCents: 0
+description: TODO — Thor's description of Moth. Prices here are placeholders; set the real ones in Keystatic.
+work: moth-print
+featured: true
+stripeProductId: ''
+stripePriceId: ''

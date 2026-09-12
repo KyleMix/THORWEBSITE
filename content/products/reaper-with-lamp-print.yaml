@@ -1,0 +1,21 @@
+title: Reaper with Lamp
+kind: print
+images:
+- image: reaper-with-lamp-print-1.jpg
+  alt: 'TODO: Reaper with Lamp, front'
+- image: reaper-with-lamp-print-2.jpg
+  alt: 'TODO: Reaper with Lamp, detail'
+priceCents: 5500
+inventory: 20
+sold: false
+edition: Edition of 20, signed and numbered
+size: 11 × 14 in
+medium: Giclée on archival cotton rag
+year: 2025
+framing: none
+framingCents: 0
+description: TODO — Thor's description of Reaper with Lamp. Prices here are placeholders; set the real ones in Keystatic.
+work: reaper-lamp
+featured: true
+stripeProductId: ''
+stripePriceId: ''

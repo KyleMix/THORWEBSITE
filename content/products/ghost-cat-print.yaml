@@ -1,0 +1,21 @@
+title: Ghost Cat in Heart Sunglasses
+kind: print
+images:
+- image: ghost-cat-print-1.jpg
+  alt: 'TODO: Ghost Cat in Heart Sunglasses, front'
+- image: ghost-cat-print-2.jpg
+  alt: 'TODO: Ghost Cat in Heart Sunglasses, detail'
+priceCents: 3500
+inventory: 40
+sold: false
+edition: Open edition, signed
+size: 8 × 10 in
+medium: Giclée print
+year: 2025
+framing: none
+framingCents: 0
+description: TODO — Thor's description of Ghost Cat in Heart Sunglasses. Prices here are placeholders; set the real ones in Keystatic.
+work: ghost-cat-in-heart-sunglasses
+featured: false
+stripeProductId: ''
+stripePriceId: ''

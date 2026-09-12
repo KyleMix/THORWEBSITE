@@ -1,0 +1,6 @@
+platform: email
+label: Email
+handle: lampkeyart@gmail.com
+url: mailto:lampkeyart@gmail.com
+visible: true
+order: 6
