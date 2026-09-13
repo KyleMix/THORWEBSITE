@@ -18,7 +18,7 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export const viewport: Viewport = { themeColor: '#100D0C', width: 'device-width', initialScale: 1 };
+export const viewport: Viewport = { themeColor: '#000000', width: 'device-width', initialScale: 1 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -27,7 +27,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {/* Only the face the largest element uses. Preloading the italic too
             made the two compete on a throttled connection and pushed LCP out;
             the italic lede swaps in a beat later, which nobody notices. */}
-        <link rel="preload" href="/fonts/fraunces-normal-latin.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
+        <link rel="preload" href="/fonts/bodoni-moda-normal-latin.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
       </head>
       <body>
         {children}

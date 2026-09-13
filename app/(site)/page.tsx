@@ -4,7 +4,7 @@ import { Pic } from '@/components/Pic';
 import { Flip } from '@/components/Flip';
 import { WorkIndex } from '@/components/WorkIndex';
 import { SocialInline } from '@/components/Socials';
-import { Bulb } from '@/components/Icons';
+
 
 export default async function Home() {
   const [s, featured, hero, designs, dates, socials, all] = await Promise.all([
@@ -26,6 +26,7 @@ export default async function Home() {
           </div>
         )}
         <div className="cover-body">
+          <img src="/brand/enso-ring.webp" alt="" aria-hidden="true" className="cover-enso" width={340} height={340} decoding="async" fetchPriority="low" />
           <h1 className="cover-name name"><span>{first}</span><span>{last ?? ''}</span></h1>
           <div className="cover-meta">
             <span className="mono">{s.brandName}</span>
@@ -146,7 +147,7 @@ export default async function Home() {
             <p className="prose-2">Ready to book? Go straight to <Link href="/book" className="link">Book</Link>. Want a piece for the wall? <Link href="/shop" className="link">Shop</Link>. Everything else, including just saying you like the ghost cat:</p>
             <p><a href={`mailto:${s.email}`} className="display" style={{ fontSize: 'var(--t-xl)' }}>{s.email}</a></p>
             <SocialInline socials={socials} />
-            <p className="mono"><Bulb /> {s.thanksLine}</p>
+            <p className="mono">{s.thanksLine}</p>
           </div>
         </div>
       </section>

@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="Lampkey Artery mark">
+  <!-- A dry-brush ring. Smooth arcs are roughened by turbulence displacement
+       rather than hand-authored path data, so the edge breaks up the way a
+       loaded brush does and stays crisp at any size. Strokes take currentColor
+       so the mark inverts with the material it sits on.
+       SWAP POINT: replace this file with Thor's own enso when the artwork is
+       supplied. Nothing else needs to change. -->
+  <defs>
+    <filter id="lk-dry-a" x="-25%" y="-25%" width="150%" height="150%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency="0.028 0.055" numOctaves="4" seed="11" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="11" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <filter id="lk-dry-b" x="-25%" y="-25%" width="150%" height="150%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency="0.05 0.03" numOctaves="5" seed="29" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="7" xChannelSelector="R" yChannelSelector="B"/>
+    </filter>
+  </defs>
+  <g fill="none" stroke="currentColor" stroke-linecap="round">
+    <!-- main loaded stroke, left open where the brush lifts -->
+    <circle cx="100" cy="102" r="72" stroke-width="15" stroke-dasharray="392 61" stroke-dashoffset="330" filter="url(#lk-dry-a)" opacity=".92"/>
+    <!-- the streaks a splayed brush leaves inside and outside the main pass -->
+    <circle cx="100" cy="102" r="81" stroke-width="3.5" stroke-dasharray="196 40 92 250" stroke-dashoffset="300" filter="url(#lk-dry-b)" opacity=".62"/>
+    <circle cx="101" cy="101" r="63" stroke-width="2.6" stroke-dasharray="120 54 168 180" stroke-dashoffset="250" filter="url(#lk-dry-b)" opacity=".5"/>
+    <circle cx="100" cy="103" r="87" stroke-width="1.8" stroke-dasharray="70 300 120 200" stroke-dashoffset="120" filter="url(#lk-dry-a)" opacity=".3"/>
+  </g>
+</svg>

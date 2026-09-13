@@ -1,9 +1,9 @@
 'use client';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { NAV } from '@/lib/site';
-import { Bulb } from './Icons';
+import { Enso } from './Enso';
 
 export function Nav({ brand, socials }: { brand: string; socials: { label: string; url: string; handle: string }[] }) {
   const path = usePathname();
@@ -20,13 +20,35 @@ export function Nav({ brand, socials }: { brand: string; socials: { label: strin
     return () => window.removeEventListener('keydown', onKey);
   }, [open]);
 
+  // Which material is under the bar right now, so the nav can take a real
+  // colour instead of blending. Hit-tests one point per frame, rAF-throttled.
+  const nav = useRef<HTMLElement>(null);
+  useEffect(() => {
+    const el = nav.current;
+    if (!el) return;
+    let raf = 0;
+    const read = () => {
+      raf = 0;
+      if (open) { el.dataset.over = 'paper'; return; }
+      const y = el.getBoundingClientRect().height / 2;
+      const hit = document.elementsFromPoint(Math.round(window.innerWidth * 0.62), Math.round(y));
+      const section = hit.find((n) => n instanceof HTMLElement && n.dataset.material) as HTMLElement | undefined;
+      el.dataset.over = section?.dataset.material === 'paper' ? 'paper' : 'skin';
+    };
+    const onScroll = () => { if (!raf) raf = requestAnimationFrame(read); };
+    read();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    return () => { window.removeEventListener('scroll', onScroll); window.removeEventListener('resize', onScroll); cancelAnimationFrame(raf); };
+  }, [open, path]);
+
   const current = (href: string) => (path === href || (href !== '/' && path.startsWith(href)) ? 'page' : undefined);
 
   return (
     <>
-      <header className="nav">
+      <header className="nav" ref={nav} data-over="skin">
         <Link href="/" className="nav-brand" aria-label={`${brand} — home`}>
-          <Bulb /> {brand}
+          <Enso size={26} className="nav-enso" /> <span>{brand}</span>
         </Link>
         <nav className="nav-links" aria-label="Primary">
           {NAV.map((n) => (
@@ -41,7 +63,7 @@ export function Nav({ brand, socials }: { brand: string; socials: { label: strin
 
       <div id="menu" className="menu" data-open={open} aria-hidden={!open}>
         <div className="menu-head">
-          <span className="nav-brand"><Bulb /> {brand}</span>
+          <span className="nav-brand"><Enso size={26} className="nav-enso" /> <span>{brand}</span></span>
           <button className="nav-toggle" onClick={() => setOpen(false)}>Close</button>
         </div>
         <nav className="menu-list" aria-label="Menu">

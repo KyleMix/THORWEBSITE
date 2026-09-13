@@ -13,15 +13,23 @@ npm run dev          # http://localhost:3000  ·  editor at /keystatic
 
 ## The design system, in one paragraph
 
-Two materials, never mixed on one screen. **Skin** is the warm near-black
-(`#100D0C`) that tattoo photography needs. **Paper** is bone (`#EFE8DC`), for
-drawings, prints and everything you read. Every section declares
+Everything is drawn from Thor's mark: white brush and scratchboard linework on
+true black. Two materials, never mixed on one screen. **Black** (`#000000` —
+the logo's own ground, so his files sit seamlessly) carries tattoo photography,
+the hero, the gallery and the lightbox. **Chalk** (`#F4F2ED`) carries drawings,
+prints, the shop and everything you read. Every section declares
 `data-material="skin"` or `"paper"` and all colours resolve through
-`--bg / --fg` tokens, so the chrome never fights a piece. Type is **Fraunces**
-(display, WONK axis on), **Karla** (body) and **IBM Plex Mono** (labels,
-folios, specs) — self-hosted WOFF2 from `/public/fonts`, no third-party
-request. The one accent colour is deliberately unset: it gets pulled from
-Thor's actual work once `/assets` lands.
+`--bg / --fg` tokens, so the chrome never fights a piece.
+
+Type follows the logo too: **Bodoni Moda** for display, whose engraved hairlines
+echo the scratchboard linework, **Courier Prime** for labels, folios and specs,
+echoing the `@theLAMPKEYARTERY` typewriter lockup, and **Karla** for body. All
+self-hosted WOFF2 from `/public/fonts`, subset and axis-pinned, no third-party
+request. The distress stays in Thor's mark and his artwork and out of the
+chrome — that is what lets the mark read as the one rough thing on the page.
+
+The one accent colour is still deliberately unset: it gets pulled from Thor's
+actual work once `/assets` lands.
 
 The signature interaction is **the lamp** — a warm light that follows the
 cursor across skin sections and lifts the piece under it. On phones it becomes
@@ -221,33 +229,36 @@ categories. Every page clears the 95 budget:
 
 | Page | Perf | A11y | Best practices | SEO |
 |---|---|---|---|---|
-| `/` | 95 | 100 | 100 | 100 |
-| `/work` | 97 | 100 | 100 | 100 |
-| `/book` | 97 | 97 | 100 | 100 |
-| `/shop` | 95 | 100 | 100 | 100 |
+| `/` | 94–95 | 100 | 100 | 100 |
+| `/work` | 96 | 100 | 100 | 100 |
+| `/book` | 98 | 100 | 100 | 100 |
+| `/shop` | 97 | 100 | 100 | 100 |
 | `/shop/[slug]` | 99 | 100 | 100 | 100 |
-| `/designs` | 97 | 100 | 100 | 100 |
-| `/about` | 97 | 100 | 100 | 100 |
-| `/contact` | 97 | 100 | 100 | 100 |
-| `/events` | 97 | 100 | 100 | 100 |
+| `/designs` | 99 | 100 | 100 | 100 |
+| `/about` | 100 | 100 | 100 | 100 |
+| `/contact` | 98 | 100 | 100 | 100 |
+| `/events` | 99 | 100 | 100 | 100 |
+
+The home page sits on the line at 94–95 across repeat runs; it is the heaviest
+page (cover image, pinned flip-through, index, Instagram strip).
 
 Desktop is 100 / 100 / 100 / 100 throughout. CLS is 0 on every page.
 
-**On LCP.** Lighthouse reports 2.1–2.9 s on mobile; measured directly against a
+**On LCP.** Lighthouse reports 1.9–3.0 s on mobile; measured directly against a
 throttled profile (1.6 Mbps, 4× CPU) the LCP element — the hero image — paints
-at **1.3 s**. The gap is Lighthouse's simulated-throttling model, which is
+at **1.06 s**. The gap is Lighthouse's simulated-throttling model, which is
 deliberately pessimistic. Note that the hero is currently a flat placeholder
 that compresses to a few KB; a real photograph will be heavier, so re-measure
 once `/assets` lands.
 
-**The one 97.** `/book` fails Lighthouse's `color-contrast` audit on the
-navigation. This is a false positive: the nav uses `mix-blend-mode: difference`
-so it inverts itself against whatever is behind it, and Lighthouse evaluates
-declared colours rather than rendered ones — it sees bone-on-bone. Sampling the
-actual rendered pixels gives **17.3:1** on paper pages and **14.3:1** over the
-hero photograph, both far above AA. The dark band at the top of the hero
-(`.cover::before`) exists to keep that true over mid-tone imagery, where a
-difference blend would otherwise wash out.
+**On the navigation.** It used to float over both materials using
+`mix-blend-mode: difference`, which renders correctly but cannot be proved —
+contrast checkers read declared colours, so every light page failed the audit at
+a nominal 1.08:1 while actually rendering at 17:1. A difference blend also
+washes out over mid-tone photography, which is a real failure, not just a
+reported one. The nav now hit-tests the material beneath it once per frame and
+takes an explicit colour, so contrast is real, auditable, and holds over
+imagery.
 
 Everything else is real: the palette's two faint greys were raised to clear
 4.5:1 after measuring (3.4:1 and 3.5:1 originally), the lightbox is keyboard
@@ -262,6 +273,13 @@ npm run build && npm start
 npx --yes lighthouse http://localhost:3000/ --view
 ```
 
-Fonts are subset and axis-pinned (`npm run fonts:subset`): 196 KB → 122 KB
-across five faces. Only the display face is preloaded — preloading the italic
+Fonts are subset and axis-pinned (`npm run fonts:subset`): 170 KB → 107 KB
+across six faces. Only the display face is preloaded — preloading the italic
 too made the two compete on a throttled link and pushed LCP out.
+
+The brush ring is drawn as arcs roughened by an SVG turbulence filter. Inline
+that is cheap at 26 px in the header, but at 340 px behind the cover name the
+filter costs real paint time on a phone, so the two large always-on-black uses
+ship as WebP via `npm run brand:raster`; the small material-inverting one stays
+inline so it can take `currentColor`. See `public/brand/README.md` to swap in
+Thor's own artwork — it is a two-file replacement.

@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
 Subsets the self-hosted WOFF2 faces to the characters this site renders and
-pins each variable axis to the range the CSS uses. Fraunces ships every optical
-size plus the WONK axis; pinning WONK and narrowing wght roughly halves it.
+pins each variable axis to the range the CSS uses. Bodoni Moda ships every optical
+size across a wide weight range; narrowing both roughly halves it.
 
     pip install fonttools brotli
     npm run fonts:subset
@@ -24,11 +24,12 @@ LATIN = ("U+0020-007E,U+00A0,U+00A9,U+00B7,U+00D7,U+00E0-00FF,"
 LATIN_EXT = "U+0100-024F,U+1E00-1EFF,U+2C60-2C7F,U+A720-A7FF"
 
 FACES = [
-    ("fraunces-normal-latin.woff2",        LATIN,     {"wght": (300, 600), "opsz": (9, 144), "WONK": 1}),
-    ("fraunces-italic-latin.woff2",        LATIN,     {"wght": (300, 500), "opsz": (14, 96), "WONK": 1}),
-    ("karla-normal-400-600-latin.woff2",   LATIN,     {"wght": (400, 600)}),
+    ("bodoni-moda-normal-latin.woff2",       LATIN,     {"wght": (400, 700), "opsz": (8, 96)}),
+    ("bodoni-moda-italic-latin.woff2",       LATIN,     {"wght": (400, 600), "opsz": (8, 72)}),
+    ("karla-normal-400-600-latin.woff2",     LATIN,     {"wght": (400, 600)}),
     ("karla-normal-400-600-latin-ext.woff2", LATIN_EXT, {"wght": (400, 600)}),
-    ("ibm-plex-mono-normal-400-latin.woff2", LATIN,   {}),
+    ("courier-prime-normal-400-latin.woff2", LATIN,     {}),
+    ("courier-prime-normal-700-latin.woff2", LATIN,     {}),
 ]
 
 kb = lambda p: os.path.getsize(p) / 1024

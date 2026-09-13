@@ -27,14 +27,3 @@ export function SocialIcon({ platform }: { platform: string }) {
       );
   }
 }
-
-/** The mark: a filament bulb, drawn once, used small. Swap point for the real logo is /public/brand/logo.svg. */
-export function Bulb({ size = 14 }: { size?: number }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round">
-      <path d="M8.5 16.5a6.5 6.5 0 1 1 7 0v1.5h-7z" />
-      <path d="M10 21h4" />
-      <path d="M12 16.5v-3l-1.5-1.5M12 13.5l1.5-1.5" />
-    </svg>
-  );
-}

@@ -1,14 +1,17 @@
 import Link from 'next/link';
 import { getSettings, getSocials } from '@/lib/content';
 import { SocialInline } from './Socials';
-import { Bulb } from './Icons';
+
 
 export async function Footer() {
   const [s, socials] = await Promise.all([getSettings(), getSocials()]);
   return (
     <footer className="footer" data-material="skin">
       <div className="footer-top">
-        <p className="sig"><Bulb size={22} /> {s.thanksLine}</p>
+        <div className="sig-block">
+          <img src="/brand/enso-mark.webp" alt="" aria-hidden="true" className="sig-mark" width={132} height={165} loading="lazy" decoding="async" />
+          <p className="sig">{s.thanksLine}</p>
+        </div>
         <SocialInline socials={socials} />
       </div>
       <div className="footer-cols">

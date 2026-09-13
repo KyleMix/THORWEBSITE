@@ -19,8 +19,8 @@ const specs = [
 ];
 
 const colors = {
-  skin: { bg: '#201A18', mark: '#6E645A', text: '#9A8E80' },
-  paper: { bg: '#DED3C0', mark: '#9E9081', text: '#7A6E60' },
+  skin: { bg: '#0D0D0D', mark: '#5E5C58', text: '#8A8780' },
+  paper: { bg: '#E8E5DE', mark: '#A09C93', text: '#6B6760' },
 };
 
 const gcd = (a, b) => (b ? gcd(b, a % b) : a);
