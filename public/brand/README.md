@@ -1,56 +1,54 @@
 # Brand
 
-## Current state: the mark on the site is a STAND-IN
+Thor's mark is in. The two files he supplied are the source of truth, kept here
+as `src-lockup.png` and `src-emblem.png`; everything the site uses is derived
+from them by `npm run brand:prepare`.
 
-Thor's artwork has been seen but never supplied as a file, so the ring you see
-is drawn in code — arcs roughened by an SVG turbulence filter. It is an
-approximation and it is not meant to survive. Replace it.
+## What he supplied, and what had to be done to it
 
-## Drop the real files here
+**`src-lockup.png`** — the brush ring, `@theLAMPKEYARTERY` and the roots, white
+line art on a **solid black background**, no transparency.
 
-Save them at exactly these paths and names. Every use on the site already
-points at them, so there is no code to change — the upload *is* the swap.
+That background had to go. The footer and the cover watermark sit on black and
+would have tolerated it, but the header mark sits on black on the gallery pages
+and on chalk (`#F4F2ED`) everywhere else, and a black rectangle would have shown
+as a card on every light page. The artwork is white line on black, which means
+its own luminance *is* the alpha channel it needs, so the script keys it: alpha
+comes from luminance, RGB is forced to the site's chalk, and the antialiased
+brush edges survive as partial alpha instead of a hard cutout.
 
-| File | What it is | Used for |
+**`src-emblem.png`** — the raven, lamp post and cliffs inside the ring, already
+transparent, but the artwork is *black* with white line inside it. That is the
+reverse of the lockup, and it means the emblem only works on the light
+material: on black its ring disappears into the page and the illustration
+floats. It is used on chalk only.
+
+## Derived files
+
+| File | From | Used for |
 |---|---|---|
-| `ring.webp` (or `.png`) | The brush ring **alone** | Header mark, cover watermark |
-| `lockup.webp` (or `.png`) | Ring + `@theLAMPKEYARTERY` + roots | Footer sign-off |
-| `emblem.webp` (or `.png`) | The full illustration — raven, lamp post, cliffs inside the ring | Optional feature piece |
+| `ring-sm.webp` | lockup, keyed, ring cropped, 72px | header mark |
+| `ring.webp` | same, 900px | cover watermark, via `next/image` |
+| `lockup.webp` | lockup, keyed, full | footer sign-off |
+| `emblem.webp` | emblem, trimmed | the light material only |
+| `app/icon.png` | ring on a black plate, 96px | favicon |
 
-Upload straight to the branch:
-<https://github.com/KyleMix/THORWEBSITE/upload/claude/tender-ritchie-fmgd9x/public/brand>
+Cropping the ring out of the lockup is the fiddly part, and the script explains
+its reasoning inline: the row-wise alpha profile shows the ring's mass to about
+77% of the height, a quiet band, a spike where the handle text sits, then roots
+trailing thinly to the bottom. Taking the minimum across the lower half lands
+*below* the text, because the roots region is quieter than the gap. So it finds
+the text instead — the first trough followed by a clear rise — and cuts there.
 
-If you upload `.png` instead of `.webp`, say so and the three references in
-`components/BrandMark.tsx` get the extension changed — that is the whole edit.
+## If Thor sends new artwork
 
-## The one thing that matters: transparency
+Replace `src-lockup.png` and `src-emblem.png` and run `npm run brand:prepare`.
+If he can send **vector**, better still: an SVG with strokes set to
+`currentColor` inverts natively, stays sharp at any size, and skips the keying
+entirely — at which point the header mark can go back to being inlined.
 
-**Export white linework on a transparent background, not on black.**
-
-The footer and the cover watermark sit on black, so a black-background file
-would look fine there. The header mark does not — it sits on black on the
-gallery pages and on chalk (`#F4F2ED`) on the shop, book and about pages, and a
-black rectangle would show as a box on the light ones.
-
-With a transparent white file, the header inverts itself in CSS
-(`.nav[data-over="paper"] .nav-mark { filter: invert(1) }`) and one file covers
-both materials. With a black-background file it cannot, and you would have to
-supply a second dark-on-light version.
-
-Vector is better than raster if the artwork exists as one: an SVG with strokes
-set to `currentColor` inverts natively and stays sharp at every size. Raster is
-completely fine otherwise — 1200&nbsp;px wide is plenty for the largest use.
-
-## After the files land
-
-```bash
-npm run brand:raster   # only if you dropped SVGs and want WebP derivatives
-npm run build
-```
-
-`app/icon.svg` is the favicon and is separate — replace it with a square
-version of the ring. Keep its black background plate; the mark is white
-linework and vanishes on a light browser tab otherwise.
+A transparent-background export would also remove the need for the keying step,
+though the result is the same either way.
 
 ## Typography in the lockup
 

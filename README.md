@@ -229,27 +229,35 @@ categories. Every page clears the 95 budget:
 
 | Page | Perf | A11y | Best practices | SEO |
 |---|---|---|---|---|
-| `/` | 94–95 | 100 | 100 | 100 |
-| `/work` | 96 | 100 | 100 | 100 |
-| `/book` | 98 | 100 | 100 | 100 |
+| `/` | 91–92 | 100 | 100 | 100 |
+| `/work` | 94 | 100 | 100 | 100 |
+| `/book` | 97 | 100 | 100 | 100 |
 | `/shop` | 97 | 100 | 100 | 100 |
-| `/shop/[slug]` | 99 | 100 | 100 | 100 |
-| `/designs` | 99 | 100 | 100 | 100 |
-| `/about` | 100 | 100 | 100 | 100 |
+| `/designs` | 98 | 100 | 100 | 100 |
+| `/about` | 97–98 | 100 | 100 | 100 |
 | `/contact` | 98 | 100 | 100 | 100 |
-| `/events` | 99 | 100 | 100 | 100 |
+| `/events` | 100 | 100 | 100 | 100 |
 
-The home page sits on the line at 94–95 across repeat runs; it is the heaviest
-page (cover image, pinned flip-through, index, Instagram strip).
+Accessibility, best practices and SEO are 100 everywhere. Performance dipped
+when the real photographs replaced the flat placeholder plates, which was
+expected and is the point of the site — home and work are the two image-heaviest
+pages.
 
 Desktop is 100 / 100 / 100 / 100 throughout. CLS is 0 on every page.
 
-**On LCP.** Lighthouse reports 1.9–3.0 s on mobile; measured directly against a
-throttled profile (1.6 Mbps, 4× CPU) the LCP element — the hero image — paints
-at **1.06 s**. The gap is Lighthouse's simulated-throttling model, which is
-deliberately pessimistic. Note that the hero is currently a flat placeholder
-that compresses to a few KB; a real photograph will be heavier, so re-measure
-once `/assets` lands.
+**On LCP.** Lighthouse reports 1.8–3.4 s on mobile; measured directly against a
+throttled profile (1.6 Mbps, 4× CPU) the LCP element — the hero photograph —
+paints at **1.0 s**. The gap is Lighthouse's simulated-throttling model, which
+is deliberately pessimistic.
+
+Two things found by measuring rather than assuming, both worth remembering if
+the brand files are ever regenerated: the favicon, rendered at 512 px, encoded
+to **131 KB** because brush texture does not compress as PNG, making it the
+heaviest resource on every page — it is now 96 px and palette-quantised at
+4 KB. And the cover watermark was served as a fixed-width file, which at 2×
+either shipped bytes a 9%-opacity decoration has no business costing or failed
+Lighthouse's low-resolution check; it now goes through `next/image` like
+everything else.
 
 **On the navigation.** It used to float over both materials using
 `mix-blend-mode: difference`, which renders correctly but cannot be proved —

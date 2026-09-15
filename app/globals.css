@@ -496,22 +496,21 @@ hr{border:0; border-top:1px solid var(--rule); margin:0}
 .filters .clear{color:var(--fg)}
 
 /* ---------- the mark ---------- */
-/* Thor's ring. Used at three scales and nowhere else: small beside the
-   wordmark, large behind the cover name, and signing off the footer. */
-.nav-enso{flex:0 0 auto; margin-top:-.15em}
-/* When the header mark becomes a real white-on-transparent file, it needs to
-   flip on the chalk material. The drawn stand-in takes currentColor and does
-   this for free; an <img> does not, so the rule is here waiting. */
+/* Thor's ring and lockup are chalk linework on transparent: they read on the
+   dark material and are inverted on the light one, so one file serves both.
+   Used at three scales and nowhere else. */
+.nav-mark{flex:0 0 auto; width:1.9rem; height:auto; margin-top:-.12em}
 .nav[data-over="paper"] .nav-mark{filter:invert(1)}
-.nav-brand{gap:.45rem}
-/* Sits behind the name, on the type side of the cover, so it reads as a
-   watermark on the page rather than competing with the photograph. */
-.cover-enso{position:absolute; left:-4rem; bottom:1rem; z-index:-1; width:22rem; height:auto; opacity:.1; pointer-events:none; max-width:none}
+.nav-brand{gap:.5rem}
+.cover-enso{position:absolute; left:-4rem; bottom:1rem; z-index:-1; width:22rem; height:auto; opacity:.12; pointer-events:none; max-width:none}
 @media (min-width:60rem){
-  .cover-enso{left:-7rem; bottom:-4rem; width:30rem; opacity:.08}
+  .cover-enso{left:-7rem; bottom:-4rem; width:30rem; opacity:.09}
 }
 .sig-block{display:grid; gap:var(--s2); justify-items:start}
-.sig-mark{width:8.25rem; height:auto; opacity:.9; margin-left:-.5rem}
+.sig-mark{width:9.25rem; height:auto; opacity:.95; margin-left:-.5rem}
+/* The emblem is black artwork with white line inside it, so it belongs on the
+   light material; on black its ring would disappear into the page. */
+.emblem{width:min(26rem,70vw); height:auto; justify-self:center}
 /* An empty gallery, an empty date list: the ring, not a shrug. */
 .empty-mark{display:grid; justify-items:center; gap:var(--s2); padding-block:var(--s5); color:var(--fg-2); text-align:center}
 .empty-mark .ring{opacity:.3}

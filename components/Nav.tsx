@@ -48,7 +48,7 @@ export function Nav({ brand, socials }: { brand: string; socials: { label: strin
     <>
       <header className="nav" ref={nav} data-over="skin">
         <Link href="/" className="nav-brand" aria-label={`${brand} — home`}>
-          <BrandRing className="nav-enso" /> <span>{brand}</span>
+          <BrandRing className="nav-mark" /> <span>{brand}</span>
         </Link>
         <nav className="nav-links" aria-label="Primary">
           {NAV.map((n) => (
@@ -63,7 +63,7 @@ export function Nav({ brand, socials }: { brand: string; socials: { label: strin
 
       <div id="menu" className="menu" data-open={open} aria-hidden={!open}>
         <div className="menu-head">
-          <span className="nav-brand"><BrandRing className="nav-enso" /> <span>{brand}</span></span>
+          <span className="nav-brand"><BrandRing className="nav-mark" /> <span>{brand}</span></span>
           <button className="nav-toggle" onClick={() => setOpen(false)}>Close</button>
         </div>
         <nav className="menu-list" aria-label="Menu">
