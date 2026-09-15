@@ -28,10 +28,36 @@ const MAX = 2400;
 
 const slugify = (s) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 60);
 const firstLine = (cap) => (cap || '').split('\n').map((l) => l.trim()).filter(Boolean)[0] ?? '';
-const titleFrom = (cap, fallback) => {
+
+/**
+ * Turns a file name into something worth showing. `ghostface-forearm.jpg`
+ * becomes "Ghostface Forearm"; camera junk like `IMG_4821` or `PXL_20250103_20`
+ * yields nothing, so the caller can fall back rather than publish a title that
+ * has to be retyped. Naming files before import is the single biggest
+ * time-saver, so this rewards it and refuses to dress up the alternative.
+ */
+const SMALL = new Set(['a', 'an', 'and', 'at', 'for', 'in', 'of', 'on', 'or', 'the', 'to', 'with']);
+const prettyName = (base) => {
+  const cleaned = base
+    .replace(/^(img|dsc|dscf|pxl|vid|photo|image|screenshot|insta|post)[-_ ]?/i, '')
+    .replace(/[-_]?\d{6,}([-_]\d+)*$/g, '')          // trailing timestamps / burst numbers
+    .replace(/[-_]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+  if (!cleaned || !/[a-z]{2}/i.test(cleaned)) return '';   // all digits or junk
+  return cleaned
+    .split(' ')
+    .map((w, i) => (i > 0 && SMALL.has(w.toLowerCase()) ? w.toLowerCase()
+      : w === w.toUpperCase() && w.length > 1 ? w          // keep acronyms
+      : w[0].toUpperCase() + w.slice(1).toLowerCase()))
+    .join(' ');
+};
+
+const titleFrom = (cap, base) => {
   const l = firstLine(cap).replace(/[#@][\w.]+/g, '').replace(/[^\w\s'&-]/g, ' ').replace(/\s+/g, ' ').trim();
   const t = l.split(/[.!?]/)[0].trim();
-  return t && t.length <= 60 ? t : fallback;
+  if (t && t.length <= 60) return t;
+  return prettyName(base) || base;
 };
 const styleGuess = (cap) => {
   const c = (cap || '').toLowerCase(); const s = [];
@@ -89,6 +115,6 @@ for (const [folder, out] of [['events', 'public/media/events'], ['thor', 'public
   if (!existsSync(dir)) continue;
   for (const f of readdirSync(dir).filter((x) => /\.(jpe?g|png|webp)$/i.test(x))) { const { name } = await copy(join(dir, f), out); console.log('·', folder, name); }
 }
-if (existsSync(join(ROOT, 'video'))) { mkdirSync('public/media/video', { recursive: true }); for (const f of readdirSync(join(ROOT, 'video'))) { const o = join('public/media/video', f); if (!existsSync(o)) writeFileSync(o, readFileSync(join(ROOT, 'video', f))); console.log('·', 'video', f); } }
+if (existsSync(join(ROOT, 'video'))) { mkdirSync('public/media/video', { recursive: true }); for (const f of readdirSync(join(ROOT, 'video')).filter((x) => /\.(mp4|mov|webm|m4v)$/i.test(x))) { const o = join('public/media/video', f); if (!existsSync(o)) writeFileSync(o, readFileSync(join(ROOT, 'video', f))); console.log('·', 'video', f); } }
 
 console.log(`\n${n} entries created. Next: open /keystatic, write alt text, set featured/hero, fix types (design/original/print/live-event) and styles.`);
