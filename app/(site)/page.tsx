@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { getSettings, getFeaturedWorks, getHeroWork, getDesigns, getAppearances, getSocials, getWorks, catalogueNo, KIND_LABELS } from '@/lib/content';
 import { Pic } from '@/components/Pic';
+import { BrandWatermark } from '@/components/BrandMark';
 import { Flip } from '@/components/Flip';
 import { WorkIndex } from '@/components/WorkIndex';
 import { SocialInline } from '@/components/Socials';
@@ -26,7 +27,7 @@ export default async function Home() {
           </div>
         )}
         <div className="cover-body">
-          <img src="/brand/enso-ring.webp" alt="" aria-hidden="true" className="cover-enso" width={340} height={340} decoding="async" fetchPriority="low" />
+          <BrandWatermark className="cover-enso" />
           <h1 className="cover-name name"><span>{first}</span><span>{last ?? ''}</span></h1>
           <div className="cover-meta">
             <span className="mono">{s.brandName}</span>

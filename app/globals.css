@@ -490,6 +490,10 @@ hr{border:0; border-top:1px solid var(--rule); margin:0}
 /* Thor's ring. Used at three scales and nowhere else: small beside the
    wordmark, large behind the cover name, and signing off the footer. */
 .nav-enso{flex:0 0 auto; margin-top:-.15em}
+/* When the header mark becomes a real white-on-transparent file, it needs to
+   flip on the chalk material. The drawn stand-in takes currentColor and does
+   this for free; an <img> does not, so the rule is here waiting. */
+.nav[data-over="paper"] .nav-mark{filter:invert(1)}
 .nav-brand{gap:.45rem}
 /* Sits behind the name, on the type side of the cover, so it reads as a
    watermark on the page rather than competing with the photograph. */

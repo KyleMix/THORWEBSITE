@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import { NAV } from '@/lib/site';
-import { Enso } from './Enso';
+import { BrandRing } from './BrandMark';
 
 export function Nav({ brand, socials }: { brand: string; socials: { label: string; url: string; handle: string }[] }) {
   const path = usePathname();
@@ -48,7 +48,7 @@ export function Nav({ brand, socials }: { brand: string; socials: { label: strin
     <>
       <header className="nav" ref={nav} data-over="skin">
         <Link href="/" className="nav-brand" aria-label={`${brand} — home`}>
-          <Enso size={26} className="nav-enso" /> <span>{brand}</span>
+          <BrandRing className="nav-enso" /> <span>{brand}</span>
         </Link>
         <nav className="nav-links" aria-label="Primary">
           {NAV.map((n) => (
@@ -63,7 +63,7 @@ export function Nav({ brand, socials }: { brand: string; socials: { label: strin
 
       <div id="menu" className="menu" data-open={open} aria-hidden={!open}>
         <div className="menu-head">
-          <span className="nav-brand"><Enso size={26} className="nav-enso" /> <span>{brand}</span></span>
+          <span className="nav-brand"><BrandRing className="nav-enso" /> <span>{brand}</span></span>
           <button className="nav-toggle" onClick={() => setOpen(false)}>Close</button>
         </div>
         <nav className="menu-list" aria-label="Menu">

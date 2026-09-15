@@ -18,8 +18,8 @@ const WHITE = '#F4F2ED';
 // WebP, because these are decorative and every byte here is a byte the hero
 // image is not getting on a throttled connection.
 for (const [src, out, width] of [
-  ['public/brand/enso.svg', 'public/brand/enso-ring.webp', 760],
-  ['public/brand/mark.svg', 'public/brand/enso-mark.webp', 440],
+  ['public/brand/enso.svg', 'public/brand/ring.webp', 760],
+  ['public/brand/mark.svg', 'public/brand/lockup.webp', 440],
 ]) {
   const svg = readFileSync(src, 'utf8').replaceAll('currentColor', WHITE);
   await sharp(Buffer.from(svg), { density: 300 })

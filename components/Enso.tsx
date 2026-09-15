@@ -1,9 +1,11 @@
 /**
- * Thor's brush ring. Inlined rather than served as <img> so it inherits
- * currentColor and inverts between the black and chalk materials; the
- * turbulence filter needs unique ids per instance or Safari reuses the first.
- * Artwork lives in public/brand/enso.svg — see public/brand/README.md to swap
- * in the real files.
+ * Thor's brush ring, at header size.
+ *
+ * STAND-IN. This draws the ring as arcs roughened by a turbulence filter
+ * because Thor's artwork has not been supplied as a file yet. The moment
+ * public/brand/ring.png exists, delete this component's <svg> body and render
+ * <BrandRing> from ./BrandMark instead — or just drop the file in, since
+ * BrandMark already prefers it. See public/brand/README.md.
  */
 let n = 0;
 

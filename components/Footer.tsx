@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { getSettings, getSocials } from '@/lib/content';
 import { SocialInline } from './Socials';
+import { BrandLockup } from './BrandMark';
 
 
 export async function Footer() {
@@ -9,7 +10,7 @@ export async function Footer() {
     <footer className="footer" data-material="skin">
       <div className="footer-top">
         <div className="sig-block">
-          <img src="/brand/enso-mark.webp" alt="" aria-hidden="true" className="sig-mark" width={132} height={165} loading="lazy" decoding="async" />
+          <BrandLockup className="sig-mark" />
           <p className="sig">{s.thanksLine}</p>
         </div>
         <SocialInline socials={socials} />
