@@ -1,0 +1,7 @@
+# Source images. The importer has already derived what the site serves into
+# public/media, so shipping 12 MB of originals to every deploy is wasted time.
+# They stay in git as the source of truth.
+assets/
+
+# Pristine logo files; public/brand/*.webp are the derived, deployed versions.
+public/brand/src-*.png

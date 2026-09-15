@@ -1,6 +1,7 @@
 import 'server-only';
 import path from 'node:path';
 import { readFile } from 'node:fs/promises';
+import manifest from './image-manifest.json';
 
 export type ImgMeta = { src: string; width: number; height: number; blur: string; ar: number };
 
@@ -29,6 +30,15 @@ const cache = new Map<string, Promise<ImgMeta>>();
 export function imageMeta(value: string | null | undefined, base: string = MEDIA.works, material: 'skin' | 'paper' = 'skin'): Promise<ImgMeta> {
   if (!value) return Promise.resolve(PLACEHOLDER[material]);
   const src = value.startsWith('/') ? value : `${base}/${value}`;
+
+  // Baked at build time by scripts/build-image-manifest.mjs. This is the path
+  // that matters in production: a serverless function revalidating a shop page
+  // has no /public on disk, so reading the file there would fail silently and
+  // swap in a placeholder. The filesystem fallback below only serves dev, where
+  // a file may be newer than the manifest.
+  const baked = (manifest as Record<string, ImgMeta | undefined>)[src];
+  if (baked) return Promise.resolve(baked);
+
   let p = cache.get(src);
   if (!p) {
     p = compute(src).catch(() => ({ ...PLACEHOLDER[material], src }));
