@@ -10,12 +10,11 @@ import { mkdirSync } from 'node:fs';
 const OUT = 'public/media/placeholders';
 mkdirSync(OUT, { recursive: true });
 
+// Just the two lib/images.ts falls back to when a file is missing. The seeded
+// plate set they replaced is gone now that the real work is in.
 const specs = [
-  ['skin-4x5', 1600, 2000, 'skin'], ['skin-1x1', 1600, 1600, 'skin'], ['skin-3x4', 1500, 2000, 'skin'],
-  ['skin-16x9', 2000, 1125, 'skin'], ['skin-9x16', 1125, 2000, 'skin'], ['skin-4x3', 2000, 1500, 'skin'],
-  ['paper-4x5', 1600, 2000, 'paper'], ['paper-1x1', 1600, 1600, 'paper'], ['paper-3x4', 1500, 2000, 'paper'],
-  ['paper-9x16', 1125, 2000, 'paper'], ['paper-4x3', 2000, 1500, 'paper'],
-  ['thor-3x4', 1500, 2000, 'skin'], ['thor-16x9', 2000, 1125, 'skin'],
+  ['skin-4x5', 1600, 2000, 'skin'],
+  ['paper-4x5', 1600, 2000, 'paper'],
 ];
 
 const colors = {

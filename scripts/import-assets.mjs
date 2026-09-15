@@ -37,7 +37,18 @@ const firstLine = (cap) => (cap || '').split('\n').map((l) => l.trim()).filter(B
  * time-saver, so this rewards it and refuses to dress up the alternative.
  */
 const SMALL = new Set(['a', 'an', 'and', 'at', 'for', 'in', 'of', 'on', 'or', 'the', 'to', 'with']);
+
+/**
+ * Instagram exports are named `handle_timestamp_mediaid_userid`. There is no
+ * title information in that, only the account name repeated on every file, so
+ * it is detected and rejected rather than turned into 26 pieces all called
+ * "Thelampkeyartery". The media id is kept, because it is unique and stable
+ * across re-runs, which is what the slug needs.
+ */
+const IG = /^([A-Za-z0-9_.]+?)_(\d{9,})_(\d{12,})_(\d{6,})$/;
+
 const prettyName = (base) => {
+  if (IG.test(base)) return '';
   const cleaned = base
     .replace(/^(img|dsc|dscf|pxl|vid|photo|image|screenshot|insta|post)[-_ ]?/i, '')
     .replace(/[-_]?\d{6,}([-_]\d+)*$/g, '')          // trailing timestamps / burst numbers
@@ -53,11 +64,23 @@ const prettyName = (base) => {
     .join(' ');
 };
 
+/** A stable, unique slug even when the file name carries no title at all. */
+const taken = new Set();
+const uniqueSlug = (preferred, base) => {
+  const ig = base.match(IG);
+  let slug = preferred || (ig ? `p${ig[3].slice(-10)}` : slugify(base));
+  if (!slug) slug = 'piece';
+  let s = slug, n = 2;
+  while (taken.has(s)) s = `${slug}-${n++}`;
+  taken.add(s);
+  return s;
+};
+
 const titleFrom = (cap, base) => {
   const l = firstLine(cap).replace(/[#@][\w.]+/g, '').replace(/[^\w\s'&-]/g, ' ').replace(/\s+/g, ' ').trim();
   const t = l.split(/[.!?]/)[0].trim();
   if (t && t.length <= 60) return t;
-  return prettyName(base) || base;
+  return prettyName(base) || 'Untitled';
 };
 const styleGuess = (cap) => {
   const c = (cap || '').toLowerCase(); const s = [];
@@ -97,15 +120,16 @@ for (const [folder, kind] of [['work', 'works'], ['designs', 'designs']]) {
     const meta = captions[f] ?? captions[basename(f, extname(f)) + '.jpg'] ?? {};
     const cap = meta.caption ?? '';
     const base = basename(f, extname(f));
-    const slug = slugify(titleFrom(cap, base)) || base.toLowerCase();
+    const title = titleFrom(cap, base);
+    const slug = uniqueSlug(title === 'Untitled' ? '' : slugify(title), base);
     const yamlPath = join('content', kind, `${slug}.yaml`);
-    if (existsSync(yamlPath)) continue;
+    if (existsSync(yamlPath)) { taken.add(slug); continue; }
     const { name, ar } = await copy(join(dir, f), join('public/media', kind));
     const date = (meta.date ?? '').slice(0, 10) || null;
     const year = date ? Number(date.slice(0, 4)) : new Date().getFullYear();
     const entry = kind === 'works'
-      ? { title: titleFrom(cap, base), year, type: 'tattoo', styles: styleGuess(cap), image: name, alt: 'TODO: describe this piece', medium: 'Tattoo', placement: '', status: 'healed', caption: cap, featured: false, featuredOrder: 50, hero: false, span: ar > 1.2 ? '2' : '1', product: null, design: null, instagramUrl: meta.url ?? null, date }
-      : { title: titleFrom(cap, base), image: name, alt: 'TODO: describe this design', note: cap, colorOptions: ['color', 'black-and-grey'], placementIdeas: '', repeatable: false, status: 'available', tattooedWork: null, instagramUrl: meta.url ?? null, order: 50 };
+      ? { title, year, type: 'tattoo', styles: styleGuess(cap), image: name, alt: 'TODO: describe this piece', medium: 'Tattoo', placement: '', status: 'healed', caption: cap, featured: false, featuredOrder: 50, hero: false, span: ar > 1.2 ? '2' : '1', product: null, design: null, instagramUrl: meta.url ?? null, date }
+      : { title, image: name, alt: 'TODO: describe this design', note: cap, colorOptions: ['color', 'black-and-grey'], placementIdeas: '', repeatable: false, status: 'available', tattooedWork: null, instagramUrl: meta.url ?? null, order: 50 };
     writeFileSync(yamlPath, stringify(entry));
     n++; console.log('+', kind, slug);
   }

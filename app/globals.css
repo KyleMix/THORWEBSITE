@@ -21,8 +21,14 @@
   --skin:#000000;  --skin-2:#0A0A0A;  --skin-rule:#242424;
   --bone:#F4F2ED;  --bone-2:#A5A29B;  --bone-3:#7C7973;
   --lamp:#FFF6E4;
-  /* accent: deliberately unset until the work has been reviewed. */
-  --accent:var(--fg);
+  /* Accent: red, pulled from the work rather than chosen. Sampling the
+     saturated inks across the portfolio, red is the only chromatic family that
+     recurs — 11 of 26 pieces — in the roses, the panel behind the cat figure,
+     and the accents in the rat and the bio-surreal creature. One tint per
+     material, because no single red clears AA on both black and chalk.
+     Used only as a signal: sold, claimed, focus. Never as a surface. */
+  --accent-on-skin:#D2564A;   /* 5.2:1 on #000000 */
+  --accent-on-paper:#A32B1E;  /* 6.5:1 on #F4F2ED */
 
   /* type */
   --display:"Bodoni Moda","Didot","Bodoni MT",Georgia,serif;
@@ -46,19 +52,20 @@
   --bg:var(--skin); --bg-2:var(--skin-2); --rule:var(--skin-rule);
   --fg:var(--bone); --fg-2:var(--bone-2); --fg-3:var(--bone-3);
   --lamp-alpha:.14;
+  --accent:var(--accent-on-skin);
   color-scheme:dark;
 }
 [data-material="paper"]{
   --bg:var(--paper); --bg-2:var(--paper-2); --rule:var(--paper-rule);
   --fg:var(--ink); --fg-2:var(--ink-2); --fg-3:var(--ink-3);
-  --lamp-alpha:0;
+  --lamp-alpha:0; --accent:var(--accent-on-paper);
   color-scheme:light;
   background:var(--bg); color:var(--fg);
 }
 [data-material="skin"]{
   --bg:var(--skin); --bg-2:var(--skin-2); --rule:var(--skin-rule);
   --fg:var(--bone); --fg-2:var(--bone-2); --fg-3:var(--bone-3);
-  --lamp-alpha:.14;
+  --lamp-alpha:.14; --accent:var(--accent-on-skin);
   color-scheme:dark;
   background:var(--bg); color:var(--fg);
 }
@@ -310,6 +317,7 @@ hr{border:0; border-top:1px solid var(--rule); margin:0}
 .design-img{position:relative; overflow:hidden; background:var(--bg-2); aspect-ratio:4/5}
 .design-img img{width:100%; height:100%; object-fit:cover}
 .design[data-status="claimed"] .design-img img,.design[data-status="tattooed"] .design-img img{opacity:.55}
+.design[data-status="claimed"] .design-status{background:var(--accent); color:var(--paper)}
 .design-status{position:absolute; top:.5rem; left:.5rem; font-family:var(--mono); font-size:var(--t-xs); letter-spacing:.1em; text-transform:uppercase; padding:.25rem .5rem; background:var(--fg); color:var(--bg)}
 .design .ttl{font-family:var(--display); font-optical-sizing:auto; font-size:var(--t-md)}
 @media (min-width:60rem){ .designs{grid-template-columns:repeat(4,minmax(0,1fr)); gap:var(--s4) var(--s3)} }
@@ -387,6 +395,7 @@ hr{border:0; border-top:1px solid var(--rule); margin:0}
 @media (hover:hover){ .product:hover .product-img img{transform:scale(1.03)} }
 @media (prefers-reduced-motion:reduce){ .product-img img{transition:none} .product:hover .product-img img{transform:none} }
 .product[data-sold="true"] .product-img img{opacity:.6}
+.product[data-sold="true"] .badge{background:var(--accent); color:var(--paper)}
 .badge{position:absolute; top:.6rem; left:.6rem; font-family:var(--mono); font-size:var(--t-xs); letter-spacing:.1em; text-transform:uppercase; padding:.3rem .55rem; background:var(--fg); color:var(--bg)}
 .product .ttl{font-family:var(--display); font-optical-sizing:auto; font-size:var(--t-md)}
 .product .price{font-family:var(--mono); font-size:var(--t-sm); color:var(--fg-2); font-variant-numeric:tabular-nums}
